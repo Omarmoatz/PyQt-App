@@ -24,35 +24,91 @@ from PyQt6.QtWidgets import (
     QTimeEdit,
     QVBoxLayout,
     QWidget,
+    QGridLayout,
 )
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtCore import Qt
 
 
-
-
-class MainApp(QMainWindow):
+class MainApp(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("PyQt App")
+        # self.setGeometry(1100, 300, 300, 200)
         self.setFixedSize(QSize(600,500))
-
-        layout = QVBoxLayout()
+        self.setStyleSheet("""
+            QWidget {
+                background-color: white;
+            }
+            QLineEdit {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                background-color: #fff;
+            }
+            QPushButton {
+                background-color: #0078d4;
+                color: white;
+                padding: 10px;
+                border: none;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #005fa3;
+            }
+        """)
 
         self.label = QLabel()
 
-        self.username_label = QLabel("<h1>Username</h1>")
+
+        self.username_label = QLabel("Username")
         self.username_input = QLineEdit()
+        # self.username_input.resize(5,5)
         
-        self.password_label = QLabel("<h1>password</h1>")
+        self.password_label = QLabel("password")
         self.password_input = QLineEdit()
 
         self.age = QLCDNumber()
+
+        image_label = QLabel()
+        image = QPixmap("./logo.jpg")
+        image_label.setPixmap(image.scaled(320,620, Qt.AspectRatioMode.KeepAspectRatio))
 
 
         self.btn = QPushButton("Login")
         self.btn.clicked.connect(self.on_button_click)
 
-        widgets = [
+        layout = QGridLayout()
+
+        layout.addWidget(self.username_label, 1,0)
+        layout.addWidget(self.username_input, 2,0)
+
+        layout.addWidget(self.password_label, 3,0)
+        layout.addWidget(self.password_input, 4,0)
+
+        layout.addWidget(self.btn)
+
+        layout.addWidget(image_label, 1,1)
+
+        self.setLayout(layout)
+        
+
+    def on_button_click(self):
+        self.label.setText("the button clicked")
+        self.btn.setText("clicked")
+
+
+
+app = QApplication([])
+window = MainApp()
+window.show()
+sys.exit(app.exec())
+
+
+
+
+widgets = [
             self.label,
             self.username_label,
             self.username_input,
@@ -78,29 +134,3 @@ class MainApp(QMainWindow):
             # QSpinBox,
             # QTimeEdit,
         ]
-
-        for w in widgets:
-            layout.addWidget(w)
-
-        window = QWidget()
-        window.setLayout(layout)
-        
-        self.setCentralWidget(window)
-
-
-    def on_button_click(self):
-        self.label.setText("<h1>the button clicked</h1>")
-        self.btn.setText("clicked")
-
-
-
-
-# 2. Create an instance of QApplication
-
-app = QApplication([])
-window = MainApp()
-window.show()
-
-
-# 5. Run your application's event loop
-sys.exit(app.exec())
