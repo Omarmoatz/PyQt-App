@@ -60,7 +60,7 @@ class MainApp(QMainWindow):
             self.password_label,
             self.password_input,
             
-            self.age,
+            # self.age,
             self.btn,
             # QCheckBox,
             # QComboBox,
